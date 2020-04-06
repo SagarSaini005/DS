@@ -1,0 +1,100 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+}*root;
+
+void insert(int n, struct Node* temp)
+{
+    if(n <= temp->data)
+    {
+        if(temp->left != NULL)
+            insert(n, temp->left);
+        else
+        {
+            temp->left = (struct Node*)malloc(sizeof(struct Node));
+            temp->left->data = n;
+            temp->left->left = NULL;
+            temp->left->right = NULL;
+        }
+    }
+    else if(n > temp->data)
+    {
+        if(temp->right != NULL)
+            insert(n, temp->right);
+        else
+        {
+            temp->right = (struct Node*)malloc(sizeof(struct Node));
+            temp->right->data = n;
+            temp->right->left = NULL;
+            temp->right->right = NULL;
+        }
+    }
+}
+
+void create_tree()
+{
+    int n;
+    int temp;
+    
+    root = (struct Node*)malloc(sizeof(struct Node));
+    root->left = NULL;
+    root->right = NULL;
+    
+    printf("Enter The Root: ");
+    scanf("%d", &(root->data));
+
+    printf("Enter The Number of Elements To Add: ");
+    scanf("%d", &n);
+
+    for(int i = 0; i < n; i++)
+    {
+        printf("Enter %dth Number: ", i+1);
+        scanf("%d", &temp);
+        insert(temp, root);
+    }
+}
+
+void preorder(struct Node* curr)
+{
+    if(curr != NULL)
+    {
+        printf("%d ", curr->data);
+        preorder(curr->left);
+        preorder(curr->right);
+    }
+}
+
+void inorder(struct Node* curr)
+{
+    if(curr != NULL)
+    {   
+        inorder(curr->left);
+        printf("%d ", curr->data);
+        inorder(curr->right);
+    }
+}
+
+void postorder(struct Node* curr)
+{
+    if(curr != NULL)
+    {
+        postorder(curr->left);
+        postorder(curr->right);
+        printf("%d ", curr->data);
+    }
+}
+
+int main()
+{
+    create_tree();
+    printf("\nPreorder: ");
+    preorder(root);
+    printf("\nInorder: ");
+    inorder(root);
+    printf("\nPostorder: ");
+    postorder(root);
+}
